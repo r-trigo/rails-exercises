@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Comp:</strong>
+  <%= @pkm.comp_id %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @pkm.name %>
+</p>
+
+<%= link_to 'Edit', edit_pkm_path(@pkm) %> |
+<%= link_to 'Back', pkms_path %>
