@@ -4,7 +4,7 @@ class PkmsController < ApplicationController
   # GET /pkms
   # GET /pkms.json
   def index
-    @pkms = Pkm.all
+    @pkms = Pkm.all.search(params[:region_id])
   end
 
   # GET /pkms/1
@@ -72,8 +72,4 @@ class PkmsController < ApplicationController
     params.require(:pkm).permit(:comp_id, :name, :region_id)
   end
 
-  def search
-    region_id = params[:region_id]
-    @pkms = Pkm.search(region_id)
-  end
 end

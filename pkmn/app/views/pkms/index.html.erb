@@ -4,7 +4,7 @@
 
 <%= form_tag pkms_path, method: 'get' do %>
     <p>
-      <%= select_tag :region_id, options_from_collection_for_select(Region.all, :id, :name, params[:region_id]), include_blank: true %>
+      <%= select_tag :region_id, options_from_collection_for_select(Region.all, :id, :name, params[:region_id]), :include_blank => 'All' %>
       <%= submit_tag :'Search', :name => nil %>
     </p>
 <% end %>
