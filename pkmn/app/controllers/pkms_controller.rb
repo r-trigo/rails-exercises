@@ -4,7 +4,13 @@ class PkmsController < ApplicationController
   # GET /pkms
   # GET /pkms.json
   def index
-    @pkms = Pkm.all.search(params[:region_id])
+    if params[:search]
+      @pkms = Pkm.all.search(params[:search]).order(:region_id)
+    # elsif params[:region_id]
+    #   @pkms = Pkm.all.search(params[:region_id])
+    else
+      @pkms = Pkm.all.order(:region_id)
+    end
   end
 
   # GET /pkms/1
