@@ -5,39 +5,44 @@
 <%= form_tag pkms_path, method: 'get' do %>
     <p>
       <%= text_field_tag :search, params[:search], :placeholder => 'comp_id' %>
-      <%= link_to 'Ajuda', render 'ajuda', remote: true %>
       <%= submit_tag :'Search', :name => nil %>
     </p>
-<!--    <p>
+    <p>
       <%= select_tag :region_id, options_from_collection_for_select(Region.all, :id, :name, params[:region_id]), :include_blank => 'All' %>
-      <%= submit_tag :'Search', :name => nil %>
-    </p>-->
+    </p>
 <% end %>
-
-
 
 <table>
   <thead>
-    <tr>
-      <th>Comp</th>
-      <th>Name</th>
-      <th colspan="3"></th>
-    </tr>
+  <tr>
+    <th>Comp</th>
+    <th>Name</th>
+    <th colspan="3"></th>
+  </tr>
   </thead>
 
   <tbody>
-    <% @pkms.each do |pkm| %>
+  <% @pkms.each do |pkm| %>
       <tr>
         <td><%= pkm.comp_id %></td>
         <td><%= pkm.name %></td>
         <td><%= link_to 'Show', pkm %></td>
         <td><%= link_to 'Edit', edit_pkm_path(pkm) %></td>
-        <td><%= link_to 'Destroy', pkm, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Destroy', pkm, method: :delete, data: {confirm: 'Are you sure?'} %></td>
       </tr>
-    <% end %>
+  <% end %>
   </tbody>
 </table>
 
 <br>
 
 <%= link_to 'New Pkm', new_pkm_path %>
+
+<script type="text/javascript">
+    var mytextbox = document.getElementById('search');
+    var mydropdown = document.getElementById('region_id');
+
+    mydropdown.onchange = function () {
+        mytextbox.value = assisted_search(this.options[this.selectedIndex].text);
+    }
+</script>
