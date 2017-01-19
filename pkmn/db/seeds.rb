@@ -15,12 +15,8 @@ r6 = Region.create(name: 'Kalos')
 r7 = Region.create(name: 'Alola')
 =end
 
-Product.delete_all
-
-Product.create!([
-                    {id: 1, name: "Nintendo Wii U Premium", price: 250},
-                    {id: 2, name: "XBox 360 250GB", price: 250},
-                    {id: 3, name: "Playstation 3 500 GB", price: 239.95},
-                    {id: 4, name: "Nintendo Wii", price: 99.95},
-                    {id: 5, name: "Nintendo 3DS", price: 174.95}
-                ])
+Todo.create!(title: 'grocery shopping', notes: 'pickles, eggs, red onion')
+Todo.create!(title: 'wash the car')
+Todo.create!(title: 'register kids for school', notes: 'Register Kira for Ruby Junior High and Caleb for Rails High School')
+Todo.create!(title: 'check engine light', notes: 'The check engine light is on in the Tacoma')
+Todo.create!(title: 'dog groomers', notes: 'Take Pinky and Redford to the groomers on Wednesday the 23rd')

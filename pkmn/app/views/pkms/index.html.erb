@@ -7,9 +7,8 @@
       <%= text_field_tag :search, params[:search], :placeholder => 'comp_id' %>
       <%= submit_tag :'Search', :name => nil %>
     </p>
-    <p>
-      <%= select_tag :region_id, options_from_collection_for_select(Region.all, :id, :name, params[:region_id]), :include_blank => 'All' %>
-    </p>
+    <a type="button" class="btn" href="#test_modal" data-toggle="modal">Ajuda chaves geográficas</a>
+
 <% end %>
 
 <table>
@@ -45,4 +44,5 @@
     mydropdown.onchange = function () {
         mytextbox.value = assisted_search(this.options[this.selectedIndex].text);
     }
+
 </script>

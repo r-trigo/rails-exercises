@@ -11,7 +11,15 @@
 // about supported directives.
 //
 //= require jquery
-//= require bootstrap
 //= require jquery_ujs
 //= require turbolinks
+//= require bootstrap-sprockets
 //= require_tree .
+
+//black baloon tooltips
+$(document).ready(function() {
+    $('.has-tooltip').tooltip();
+    $('.has-popover').popover({
+        trigger: 'hover'
+    });
+});
