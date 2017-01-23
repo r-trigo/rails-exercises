@@ -37,6 +37,13 @@
 
 <%= link_to 'New Pkm', new_pkm_path %>
 
+<h2>Import pkms</h2>
+
+<%= form_tag import_pkms_path, multipart: true do %>
+    <%= file_field_tag :file %>
+    <%= submit_tag 'Import' %>
+<% end %>
+
 <script type="text/javascript">
     var mytextbox = document.getElementById('search');
     var mydropdown = document.getElementById('region_id');

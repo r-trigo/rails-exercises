@@ -3,9 +3,9 @@ class Pkm < ApplicationRecord
 
   def self.search(search)
     if search
-      Pkm.where('comp_id LIKE ?', "%#{search}%")
+      where('comp_id LIKE ?', "%#{search}%")
     else
-      Pkm.all
+      all
     end
 
     # if region_id && region_id != ''
@@ -13,6 +13,26 @@ class Pkm < ApplicationRecord
     # else
     #   Pkm.all
     # end
+  end
+
+  def self.import(file)
+    spreadsheet = open_spreadsheet(file)
+    header = spreadsheet.row(1)
+    (2 .. spreadsheet.last_row).each do |i|
+      row = Hash[[header, spreadsheet.row(i)].transpose]
+      pkm = find_or_create_by(comp_id: row['comp_id'])
+      pkm.attributes = { comp_id: row['comp_id'], name: row['name'], region_id: row['region_id'] }
+      pkm.save!
+    end
+  end
+
+  def self.open_spreadsheet(file)
+    case File.extname(file.original_filename)
+      when '.csv' then Roo::Csv.new(file.path, packed: nil, file_warning: :ignore)
+      when '.xls' then Roo::Excel.new(file.path, packed: nil, file_warning: :ignore)
+      when '.xlsx' then Roo::Excelx.new(file.path, packed: nil, file_warning: :ignore)
+      else raise 'Unkown file type: #{file.original_filename}'
+    end
   end
 
 end
