@@ -1,17 +1,12 @@
 package pt.edp.fusedlocation;
 
 import android.Manifest;
-import android.app.PendingIntent;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,7 +20,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.LatLng;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, LocationListener {
 
@@ -34,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     private LocationRequest mLocationRequest;
     private TextView tv_latitude;
     private TextView tv_longitude;
-    private Button bt_show_map;
+    private Button bt_reset;
     private int contador = 0;
 
     @Override
@@ -44,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         tv_latitude = (TextView) findViewById(R.id.textView_latitude);
         tv_longitude = (TextView) findViewById(R.id.textView_longitude);
-        bt_show_map = (Button) findViewById(R.id.button_show_map);
+        bt_reset = (Button) findViewById(R.id.button_reset);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(LocationServices.API)
@@ -58,16 +54,20 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
         mGoogleApiClient.connect();
 
-        bt_show_map.setOnClickListener(new View.OnClickListener() {
+        bt_reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, MapsActivity.class);
-                i.putExtra("lat", Double.parseDouble(tv_latitude.getText().toString()));
-                i.putExtra("lng", Double.parseDouble(tv_longitude.getText().toString()));
-                startActivity(i);
+                resetLocation();
             }
         });
 
+    }
+
+    protected void resetLocation() {
+        tv_latitude.setText("latitude");
+        tv_longitude.setText("longitude");
+        contador = 0;
+        getFirstLocationAndStartUpdates();
     }
 
     @Override
@@ -77,15 +77,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
-        }
-
-        if (mLastLocation == null) {
-            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        }
-
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        getFirstLocationAndStartUpdates();
     }
 
     @Override
@@ -96,19 +88,42 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.O
     @Override
     public void onLocationChanged(Location location) {
         mLastLocation = location;
-        Toast.makeText(this, "nova localizacao!", Toast.LENGTH_SHORT).show();
-        if (tv_latitude.getText().equals(mLastLocation.getLatitude()) && tv_longitude.getText().equals(mLastLocation.getLongitude())) {
+
+        if (coordenadasSemelhantes(tv_latitude.getText().toString(), String.valueOf(mLastLocation.getLatitude())) &&
+                coordenadasSemelhantes(tv_longitude.getText().toString(), String.valueOf(mLastLocation.getLongitude()))) {
             contador++;
+        } else {
+            contador = 0;
         }
 
-        if (contador > 3) {
+        Toast.makeText(this, "Mesma localizacao => " + contador + " vezes", Toast.LENGTH_SHORT).show();
+
+        if (contador < 2) {
             tv_latitude.setText(String.valueOf(mLastLocation.getLatitude()));
             tv_longitude.setText(String.valueOf(mLastLocation.getLongitude()));
         } else {
             Intent i = new Intent(MainActivity.this, MapsActivity.class);
-            i.putExtra("lat", Double.parseDouble(tv_latitude.getText().toString()));
-            i.putExtra("lng", Double.parseDouble(tv_longitude.getText().toString()));
+            i.putExtra("lat", mLastLocation.getLatitude());
+            i.putExtra("lng", mLastLocation.getLongitude());
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
             startActivity(i);
+        }
+    }
+
+    protected void getFirstLocationAndStartUpdates() {
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+    }
+
+    protected boolean coordenadasSemelhantes(String coord1, String coord2) {
+
+        if (coord1.substring(0,7).equals(coord2.substring(0,7))) {
+            return true;
+        } else {
+            return false;
         }
     }
 }
