@@ -1,4 +1,6 @@
 class Pkm < ApplicationRecord
+  extend FriendlyId
+  friendly_id :name
   belongs_to :region
 
   def self.search(search)
