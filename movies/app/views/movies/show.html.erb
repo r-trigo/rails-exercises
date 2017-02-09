@@ -1,6 +1,6 @@
 <p id="notice"><%= notice %></p>
 
-<%= image_tag @movie.poster.url(:medium) %>
+<%= image_tag @movie.poster_url(:thumb).to_s %>
 
 <p>
   <strong>Title:</strong>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="movies_development@localhost" uuid="a2f5c791-7717-4c73-a7d4-9ad15b3f0cd6">
+      <database-info product="MySQL" version="5.6.34" jdbc-version="4.0" driver-name="MySQL Connector Java" driver-version="mysql-connector-java-5.1.35 ( Revision: 5fb9c5849535c13917c2cf9baaece6ef9693ef27 )">
+        <extra-name-characters>#@</extra-name-characters>
+        <identifier-quote-string>`</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="lower" quoted-identifiers="lower" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>root</user-name>
+      <resolve-scope>movies_development:</resolve-scope>
+    </data-source>
+    <data-source name="@bd.ipg.pt" uuid="4988f71e-e115-4401-932f-d423f6e0dee2">
+      <database-info product="Oracle" version="Oracle Database 12c Enterprise Edition Release 12.1.0.2.0 - 64bit Production&#10;With the Partitioning, OLAP, Advanced Analytics and Real Application Testing options" jdbc-version="4.0" driver-name="Oracle JDBC driver" driver-version="12.1.0.2.0">
+        <extra-name-characters>$#</extra-name-characters>
+        <identifier-quote-string>&quot;</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="upper" quoted-identifiers="exact" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>bda_1011106</user-name>
+      <resolve-scope>*:BDA_1011106,PUBLIC</resolve-scope>
+    </data-source>
+  </component>
+</project>

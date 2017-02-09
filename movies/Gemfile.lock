@@ -39,12 +39,16 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
     arel (7.1.4)
-    autoprefixer-rails (6.6.1)
+    autoprefixer-rails (6.7.2)
       execjs
     bootstrap (4.0.0.alpha6)
       autoprefixer-rails (>= 6.0.3)
       sass (>= 3.4.19)
-    builder (3.2.2)
+    builder (3.2.3)
+    carrierwave (1.0.0)
+      activemodel (>= 4.0.0)
+      activesupport (>= 4.0.0)
+      mime-types (>= 1.16)
     climate_control (0.1.0)
     cocaine (0.5.8)
       climate_control (>= 0.0.3, < 1.0)
@@ -61,7 +65,7 @@ GEM
     execjs (2.7.0)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
-    i18n (0.7.0)
+    i18n (0.8.0)
     jbuilder (2.6.1)
       activesupport (>= 3.0.0, < 5.1)
       multi_json (~> 1.2)
@@ -91,7 +95,7 @@ GEM
       cocaine (~> 0.5.5)
       mime-types
       mimemagic (~> 0.3.0)
-    puma (3.6.2)
+    puma (3.7.0)
     rack (2.0.1)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -119,6 +123,7 @@ GEM
       rake (>= 0.8.7)
       thor (>= 0.18.1, < 2.0)
     rake (12.0.0)
+    rmagick (2.15.4-x86-mingw32)
     sass (3.4.23)
     sass-rails (5.0.6)
       railties (>= 4.0.0, < 6)
@@ -135,7 +140,7 @@ GEM
       sprockets (>= 3.0.0)
     thor (0.19.4)
     thread_safe (0.3.5)
-    tilt (2.0.5)
+    tilt (2.0.6)
     turbolinks (5.0.1)
       turbolinks-source (~> 5)
     turbolinks-source (5.0.0)
@@ -150,7 +155,7 @@ GEM
       activemodel (>= 5.0)
       debug_inspector
       railties (>= 5.0)
-    websocket-driver (0.6.4)
+    websocket-driver (0.6.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
 
@@ -160,13 +165,15 @@ PLATFORMS
 DEPENDENCIES
   bootstrap (~> 4.0.0.alpha6)
   byebug
+  carrierwave (~> 1.0)
   coffee-rails (~> 4.2)
   jbuilder (~> 2.5)
   jquery-rails
   mysql2 (>= 0.3.18, < 0.5)
-  paperclip (~> 5.1.0)
+  paperclip (~> 5.1)
   puma (~> 3.0)
   rails (~> 5.0.1)
+  rmagick
   sass-rails (~> 5.0)
   turbolinks (~> 5)
   tzinfo-data
