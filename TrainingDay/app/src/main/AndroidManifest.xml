@@ -25,6 +25,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ImageryActivity" />
+        <activity android:name=".CheckMateActivity"></activity>
     </application>
 
 </manifest>

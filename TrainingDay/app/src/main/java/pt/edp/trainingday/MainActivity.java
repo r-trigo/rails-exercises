@@ -9,6 +9,7 @@ import android.widget.Button;
 public class MainActivity extends AppCompatActivity {
 
     private Button bu_imagery;
+    private Button bu_check_mate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +21,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ImageryActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        bu_check_mate = (Button) findViewById(R.id.button_check_mate);
+        bu_check_mate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, CheckMateActivity.class);
                 startActivity(intent);
             }
         });

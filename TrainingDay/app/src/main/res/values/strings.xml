@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">TrainingDay</string>
+    <string name="geo_tag_dis_warning">Não foi possível obter as coordenadas da localização da foto. Por favor ative a opção de localização nas opções da câmara, aguarde a deteção da localização e tente novamente.</string>
+    <string name="promptCheckMate">Escolha as peças...</string>
+
+    <string-array name="pecas">
+        <item>Peão</item>
+        <item>Torre</item>
+        <item>Bispo</item>
+        <item>Rainha</item>
+        <item>Rei</item>
+    </string-array>
 </resources>

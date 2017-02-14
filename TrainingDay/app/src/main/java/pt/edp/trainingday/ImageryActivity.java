@@ -2,18 +2,20 @@ package pt.edp.trainingday;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.media.ExifInterface;
 import android.provider.MediaStore;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import pt.edp.trainingday.Dialogs.GeoTagDisDialog;
 
 public class ImageryActivity extends AppCompatActivity {
 
@@ -77,7 +79,7 @@ public class ImageryActivity extends AppCompatActivity {
                 } else {
                     ib_foto2.setImageBitmap(bmp);
                 }
-                WriteTag(bmp);
+                GetGeoTag();
 
             } else if (resultCode == RESULT_CANCELED) {
                 Toast.makeText(this, "Cancelada", Toast.LENGTH_LONG).show();
@@ -85,14 +87,29 @@ public class ImageryActivity extends AppCompatActivity {
         }
     }
 
-    private void WriteTag(Bitmap bmp) {
-        /*OutputStream os = new OutputStream() {
-            @Override
-            public void write(int b) throws IOException {
-
-            }
+    private void GetGeoTag() {
+        String[] columns = {MediaStore.Images.ImageColumns.LATITUDE,
+                MediaStore.Images.ImageColumns.LONGITUDE,
+                MediaStore.Images.ImageColumns.TITLE,
+                MediaStore.Images.ImageColumns.DATA,
+                MediaStore.Images.ImageColumns.DATE_TAKEN
         };
-        bmp.compress(Bitmap.CompressFormat.JPEG, 90, os);
-        ExifInterface ei = new ExifInterface(bmp);*/
+
+        final String orderBy = MediaStore.Images.ImageColumns.DATE_MODIFIED + " DESC";
+
+        Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null, null, orderBy);
+
+        double latitude, longitude;
+        cursor.moveToPosition(0);
+        latitude = cursor.getDouble(cursor.getColumnIndex(MediaStore.Images.ImageColumns.LATITUDE));
+        longitude = cursor.getDouble(cursor.getColumnIndex(MediaStore.Images.ImageColumns.LONGITUDE));
+
+        if (latitude != 0.0 && longitude != 0.0) {
+            tv_lat_foto1.setText(String.valueOf(latitude));
+            tv_lng_foto1.setText(String.valueOf(longitude));
+        } else {
+            GeoTagDisDialog gtdd = new GeoTagDisDialog();
+            gtdd.show(getSupportFragmentManager(), "gtdd");
+        }
     }
 }
