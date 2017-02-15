@@ -17,7 +17,7 @@
 //= require_tree .
 
 //black baloon tooltips
-$(document).ready(function() {
+$(document).ready(function () {
     $('.has-tooltip').tooltip();
     $('.has-popover').popover({
         trigger: 'hover'
