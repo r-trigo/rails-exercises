@@ -1,0 +1,1 @@
+json.array! @armarios, partial: 'armarios/armario', as: :armario

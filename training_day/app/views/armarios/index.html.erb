@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Armarios</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Ci armario</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @armarios.each do |armario| %>
+      <tr>
+        <td><%= armario.ci_armario %></td>
+        <td><%= link_to 'Show', armario %></td>
+        <td><%= link_to 'Edit', edit_armario_path(armario) %></td>
+        <td><%= link_to 'Destroy', armario, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Armario', new_armario_path %>

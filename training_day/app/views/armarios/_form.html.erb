@@ -1,0 +1,22 @@
+<%= form_for(armario) do |f| %>
+  <% if armario.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(armario.errors.count, "error") %> prohibited this armario from being saved:</h2>
+
+      <ul>
+      <% armario.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :ci_armario %>
+    <%= f.text_field :ci_armario %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

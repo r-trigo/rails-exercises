@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Ci armario:</strong>
+  <%= @armario.ci_armario %>
+</p>
+
+<p>
+  <strong>Fotos:</strong>
+  <br>
+  <% for foto in @armario.fotos %>
+      <%= image_tag foto.image_url.to_s %>
+      <br>
+      <strong>Nome:</strong>
+      <%= foto.nome %>
+  <% end %>
+</p>
+
+<%= link_to 'Edit', edit_armario_path(@armario) %> |
+<%= link_to 'Back', armarios_path %>
