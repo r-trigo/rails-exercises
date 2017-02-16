@@ -9,22 +9,30 @@ import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
 
 import pt.edp.trainingday.Dialogs.GeoTagDisDialog;
 
 public class ImageryActivity extends AppCompatActivity {
 
-    private ImageButton ib_foto1;
-    private ImageButton ib_foto2;
-    private TextView tv_lat_foto1;
-    private TextView tv_lng_foto1;
+    private ImageButton ib_foto1, ib_foto2;
+    private TextView tv_lat_foto1, tv_lng_foto1;
     private final static int REQUEST_CODE = 200;
     private boolean foto_1;
+    private double latitude, longitude;
+    private Button bu_enviar_fotos;
+    private Bitmap foto1, foto2;
+    private String nome, data_tirada, f1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +70,20 @@ public class ImageryActivity extends AppCompatActivity {
 
             }
         });
+
+        bu_enviar_fotos = (Button) findViewById(R.id.button_enviar_fotos);
+        bu_enviar_fotos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (foto1 != null) {
+                    String imjson = JSONBuilder(foto1);
+                    Intent intent = new Intent(ImageryActivity.this, WhichJSONToPOSTActivity.class);
+                    intent.putExtra("imjson", imjson);
+                    intent.putExtra("base64", f1);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
     @Override
@@ -76,6 +98,7 @@ public class ImageryActivity extends AppCompatActivity {
 
                 if (foto_1) {
                     ib_foto1.setImageBitmap(bmp);
+                    foto1 = bmp;
                 } else {
                     ib_foto2.setImageBitmap(bmp);
                 }
@@ -99,8 +122,9 @@ public class ImageryActivity extends AppCompatActivity {
 
         Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null, null, orderBy);
 
-        double latitude, longitude;
         cursor.moveToPosition(0);
+        //nome = cursor.getString(cursor.getColumnIndex(MediaStore.Images.ImageColumns.DISPLAY_NAME));
+        data_tirada = cursor.getString(cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATE_TAKEN));
         latitude = cursor.getDouble(cursor.getColumnIndex(MediaStore.Images.ImageColumns.LATITUDE));
         longitude = cursor.getDouble(cursor.getColumnIndex(MediaStore.Images.ImageColumns.LONGITUDE));
 
@@ -111,5 +135,25 @@ public class ImageryActivity extends AppCompatActivity {
             GeoTagDisDialog gtdd = new GeoTagDisDialog();
             gtdd.show(getSupportFragmentManager(), "gtdd");
         }
+    }
+
+    private String JSONBuilder(Bitmap foto1) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        foto1.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream .toByteArray();
+        String encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        f1 = encoded;
+
+        String imjson = "{\n" +
+                        "\t\"foto\": {\n" +
+                        "\t\t\"nome\": \"" + nome +"\",\n" +
+                        "\t\t\"lat\": " + latitude +",\n" +
+                        "\t\t\"lng\": "+ longitude +",\n" +
+                        "\t\t\"data_tirada\": "+ data_tirada +",\n" +
+                        "\t\t\"imagem\": \"" + f1 + "\",\n" +
+                        "\t}\n" +
+                        "}";
+
+        return imjson;
     }
 }

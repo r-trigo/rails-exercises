@@ -25,7 +25,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ImageryActivity" />
-        <activity android:name=".CheckMateActivity"></activity>
+        <activity android:name=".CheckMateActivity" />
+        <activity android:name=".WhichJSONToPOSTActivity"></activity>
     </application>
 
 </manifest>
