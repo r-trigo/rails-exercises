@@ -20,10 +20,37 @@
         android:id="@+id/button_imagery" />
 
     <Button
-        android:text="CheckMate"
+        android:text="Check Mate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:id="@+id/button_check_mate" />
+
+    <Button
+        android:text="Swiper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/button_swiper" />
+
+    <Button
+        android:text="Drawer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_imagery"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="28dp"
+        android:id="@+id/button_drawer" />
+
+    <Button
+        android:text="Grid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/button_drawer"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/button_grid" />
 </RelativeLayout>

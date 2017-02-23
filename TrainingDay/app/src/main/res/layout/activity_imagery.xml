@@ -11,29 +11,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="pt.edp.trainingday.ImageryActivity">
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@android:drawable/ic_menu_camera"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="60dp"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="55dp"
-        android:id="@+id/imageButton_foto1" />
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@android:drawable/ic_menu_camera"
-        android:id="@+id/imageButton_foto2"
-        android:layout_alignTop="@+id/imageButton_foto1"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="68dp"
-        android:layout_marginEnd="68dp" />
-
     <Button
         android:text="Enviar"
         android:layout_width="wrap_content"
@@ -51,15 +28,42 @@
         android:layout_alignLeft="@+id/imageButton_foto1"
         android:layout_alignStart="@+id/imageButton_foto1"
         android:layout_marginTop="31dp"
-        android:id="@+id/textView_latitude_foto1" />
+        android:id="@+id/textView_latitude_foto1"
+        android:layout_alignRight="@+id/button_enviar_fotos"
+        android:layout_alignEnd="@+id/button_enviar_fotos" />
+
+    <ImageButton
+        android:layout_width="100dp"
+        app:srcCompat="@android:drawable/ic_menu_camera"
+        android:layout_marginLeft="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="55dp"
+        android:id="@+id/imageButton_foto1"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:srcCompat="@android:drawable/ic_menu_camera"
+        android:id="@+id/imageButton_foto2"
+        android:layout_marginRight="13dp"
+        android:layout_marginEnd="13dp"
+        android:layout_alignTop="@+id/imageButton_foto1"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:text="TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView_longitude_foto1"
+        android:layout_marginTop="19dp"
         android:layout_below="@+id/textView_latitude_foto1"
-        android:layout_alignRight="@+id/imageButton_foto1"
-        android:layout_alignEnd="@+id/imageButton_foto1"
-        android:layout_marginTop="19dp" />
+        android:layout_alignLeft="@+id/textView_latitude_foto1"
+        android:layout_alignStart="@+id/textView_latitude_foto1"
+        android:layout_alignRight="@+id/textView_latitude_foto1"
+        android:layout_alignEnd="@+id/textView_latitude_foto1" />
 </RelativeLayout>

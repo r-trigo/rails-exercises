@@ -33,4 +33,12 @@
             android:layout_height="wrap_content"
             android:id="@+id/textView_escolhas" />
     </FrameLayout>
+
+    <ImageView
+        android:id="@+id/imageView_url"
+        android:layout_width="100dp"
+        android:layout_height="150dp"
+        android:layout_centerVertical="true"
+        android:layout_alignRight="@+id/textView"
+        android:layout_alignEnd="@+id/textView" />
 </RelativeLayout>

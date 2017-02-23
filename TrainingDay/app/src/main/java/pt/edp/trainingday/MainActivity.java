@@ -12,6 +12,9 @@ public class MainActivity extends AppCompatActivity {
 
     private Button bu_imagery;
     private Button bu_check_mate;
+    private Button bu_swiper;
+    private Button bu_drawer;
+    private Button bu_grid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +41,31 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-    }
+        bu_swiper = (Button) findViewById(R.id.button_swiper);
+        bu_swiper.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SwiperActivity.class);
+                startActivity(intent);
+            }
+        });
 
+        bu_drawer = (Button) findViewById(R.id.button_drawer);
+        bu_drawer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, DrawerActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        bu_grid = (Button) findViewById(R.id.button_grid);
+        bu_grid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, GridActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
 }
