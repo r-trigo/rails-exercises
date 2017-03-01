@@ -35,7 +35,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ImageryActivity" />
         <activity android:name=".CheckMateActivity" />
         <activity android:name=".WhichJSONToPOSTActivity" />
         <activity
@@ -46,7 +45,8 @@
             android:name=".DrawerActivity"
             android:label="@string/title_activity_drawer"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".GridActivity"></activity>
+        <activity android:name=".GridActivity" />
+        <activity android:name=".ImageryActivity"></activity>
     </application>
 
 </manifest>
