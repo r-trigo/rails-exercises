@@ -22,7 +22,8 @@
   </div>
 
   <div class="field">
-    <%= f.collection_select(:region_id, Region.all, :id, :name) %>
+    <%= f.label :region_name %>
+    <%= f.text_field :region_name, data: { autocomplete_source: Region.order(:name).map(&:name) } %>
   </div>
 
   <div class="actions">

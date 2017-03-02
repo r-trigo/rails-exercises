@@ -3,6 +3,16 @@ class Pkm < ApplicationRecord
   friendly_id :name
   belongs_to :region
 
+  #getter
+  def region_name
+    region.try(:name)
+  end
+
+  #setter
+  def region_name=(name)
+    self.region = Region.find_by_name(name) if name.present?
+  end
+
   def self.search(search)
     if search
       where('comp_id LIKE ?', "%#{search}%")

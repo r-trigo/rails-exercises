@@ -48,15 +48,18 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-#bootstrap
+#for bootstrap
 gem 'bootstrap-sass', '~> 3.3', '>= 3.3.7'
 gem 'autoprefixer-rails', '~> 6.7', '>= 6.7.2'
 
-#excel parsing
+#for excel parsing
 gem 'roo', '~> 2.7', '>= 2.7.1'
 
-#friendly_id
+#for friendly_id
 gem 'friendly_id', '~> 5.2'
 
-#mailing
+#for mailing
 gem 'mailboxer', '~> 0.14.0'
+
+#for autocompletion
+gem 'jquery-ui-rails', '~> 6.0', '>= 6.0.1'
