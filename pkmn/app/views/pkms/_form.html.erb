@@ -23,7 +23,7 @@
 
   <div class="field">
     <%= f.label :region_name %>
-    <%= f.text_field :region_name, data: { autocomplete_source: Region.order(:name).map(&:name) } %>
+    <%= f.text_field :region_name, data: { autocomplete_source: regions_path } %>
   </div>
 
   <div class="actions">
