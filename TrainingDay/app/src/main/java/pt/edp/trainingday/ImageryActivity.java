@@ -6,10 +6,11 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -22,18 +23,17 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import pt.edp.trainingday.Dialogs.GeoTagDisDialog;
-
 public class ImageryActivity extends AppCompatActivity {
 
     private ImageButton ib_foto1, ib_foto2;
     private TextView tv_lat_foto1, tv_lng_foto1;
     private Button bu_enviar_fotos;
-    private boolean foto_1;
-    private String mCurrentPhotoPath, data_tirada;
+    private boolean isFoto1;
+    private String mCurrentPhotoPath, data_tirada, latitude, longitude;
     private static final int ACTION_TAKE_PHOTO = 1;
     private static final int ACTION_PICK_PHOTO = 2;
-    private double latitude, longitude;
+    private Bitmap foto1, foto2;
+    private int orientation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,16 +47,16 @@ public class ImageryActivity extends AppCompatActivity {
         ib_foto1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                foto_1 = true;
+                isFoto1 = true;
                 chooseSource();
             }
         });
 
-        ib_foto2 = (ImageButton) findViewById(R.id.imageButton_foto1);
+        ib_foto2 = (ImageButton) findViewById(R.id.imageButton_foto2);
         ib_foto2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                foto_1 = false;
+                isFoto1 = false;
                 chooseSource();
             }
         });
@@ -74,26 +74,70 @@ public class ImageryActivity extends AppCompatActivity {
 
             if (mCurrentPhotoPath != null) {
 
-                if (foto_1) {
+                if (isFoto1) {
                     setPic(ib_foto1);
                 } else {
                     setPic(ib_foto2);
                 }
 
-                GetPhotoAttributes();
-
-                //add to gallery
-                Intent mediaScanIntent = new Intent("android.intent.action.MEDIA_SCANNER_SCAN_FILE");
-                File f = new File(mCurrentPhotoPath);
-                Uri contentUri = Uri.fromFile(f);
-                mediaScanIntent.setData(contentUri);
-                this.sendBroadcast(mediaScanIntent);
-
-                mCurrentPhotoPath = null;
-
-                //BundleUpAndSend
+                galleryAddPic();
             }
         }
+    }
+
+    private Bitmap rotateIfNeeded(BitmapFactory.Options bmOptions) {
+
+        ExifInterface ei = null;
+        try {
+            ei = new ExifInterface(mCurrentPhotoPath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        getPhotoAttributes(ei);
+
+        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+
+        switch(orientation) {
+
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                return rotateImage(bitmap, 90);
+
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                return rotateImage(bitmap, 180);
+
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                return rotateImage(bitmap, 270);
+
+            case ExifInterface.ORIENTATION_NORMAL:
+
+            default:
+                break;
+        }
+
+        return bitmap;
+    }
+
+    private void getPhotoAttributes(ExifInterface ei) {
+
+        orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_UNDEFINED);
+        latitude = ei.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
+        longitude = ei.getAttribute(ExifInterface.TAG_GPS_LONGITUDE);
+        data_tirada = ei.getAttribute(ExifInterface.TAG_DATETIME);
+    }
+
+    public static Bitmap rotateImage(Bitmap source, float angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
+    }
+
+    private void galleryAddPic() {
+        Intent mediaScanIntent = new Intent("android.intent.action.MEDIA_SCANNER_SCAN_FILE");
+        File f = new File(mCurrentPhotoPath);
+        Uri contentUri = Uri.fromFile(f);
+        mediaScanIntent.setData(contentUri);
+        this.sendBroadcast(mediaScanIntent);
     }
 
     private void chooseSource() {
@@ -130,12 +174,11 @@ public class ImageryActivity extends AppCompatActivity {
                 photoFile = createImageFile();
             } catch (IOException ex) {
                 // Error occurred while creating the File
-                //...
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this, "pt.edp.android.fileprovider", photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                mCurrentPhotoPath = photoFile.getAbsolutePath();
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
                 startActivityForResult(takePictureIntent, ACTION_TAKE_PHOTO);
             }
         }
@@ -147,15 +190,29 @@ public class ImageryActivity extends AppCompatActivity {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "IMG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
+        File imageFile = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
 
         // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = image.getAbsolutePath();
-        return image;
+        mCurrentPhotoPath = imageFile.getAbsolutePath();
+        return imageFile;
+    }
+
+    private String getRealPathFromURI(Uri contentURI) {
+        String result;
+        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) {
+            result = contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            result = cursor.getString(idx);
+            cursor.close();
+        }
+        return result;
     }
 
     private void setPic(ImageButton imageButton) {
@@ -186,50 +243,19 @@ public class ImageryActivity extends AppCompatActivity {
         bmOptions.inPurgeable = true;
 
 		/* Decode the JPEG file into a Bitmap */
-        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+
+        //rotate
+        Bitmap bitmap = rotateIfNeeded(bmOptions);
 
 		/* Associate the Bitmap to the ImageView */
         imageButton.setImageBitmap(bitmap);
         imageButton.setVisibility(View.VISIBLE);
-    }
 
-    private String getRealPathFromURI(Uri contentURI) {
-        String result;
-        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
-        if (cursor == null) {
-            result = contentURI.getPath();
-        } else {
-            cursor.moveToFirst();
-            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-            result = cursor.getString(idx);
-            cursor.close();
+        if (isFoto1) {
+            foto1 = bitmap;
         }
-        return result;
-    }
-
-    private void GetPhotoAttributes() {
-        String[] columns = {MediaStore.Images.ImageColumns.LATITUDE,
-                MediaStore.Images.ImageColumns.LONGITUDE,
-                MediaStore.Images.ImageColumns.TITLE,
-                MediaStore.Images.ImageColumns.DATA,
-                MediaStore.Images.ImageColumns.DATE_TAKEN
-        };
-
-        final String orderBy = MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC";
-        Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null, null, orderBy);
-        cursor.moveToPosition(0);
-
-        Helper myHelper = new Helper();
-        data_tirada = myHelper.MillisToDate(Long.parseLong(cursor.getString(cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATE_TAKEN))));
-        latitude = cursor.getDouble(cursor.getColumnIndex(MediaStore.Images.ImageColumns.LATITUDE));
-        longitude = cursor.getDouble(cursor.getColumnIndex(MediaStore.Images.ImageColumns.LONGITUDE));
-
-        if (latitude != 0.0 && longitude != 0.0) {
-            tv_lat_foto1.setText(String.valueOf(latitude));
-            tv_lng_foto1.setText(String.valueOf(longitude));
-        } else {
-            GeoTagDisDialog gtdd = new GeoTagDisDialog();
-            gtdd.show(getSupportFragmentManager(), "gtdd");
+        else {
+            foto2 = bitmap;
         }
     }
 
