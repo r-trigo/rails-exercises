@@ -97,5 +97,27 @@ public class Helper {
         return jsonString;
     }
 
+    public double EXIFCoordinatesConverter(String stringDMS){
+        String[] DMS = stringDMS.split(",", 3);
+
+        String[] stringD = DMS[0].split("/", 2);
+        double d0 = Double.parseDouble(stringD[0]);
+        double d1 = Double.parseDouble(stringD[1]);
+        double doubleD = d0/d1;
+
+        String[] stringM = DMS[1].split("/", 2);
+        double m0 = Double.parseDouble(stringM[0]);
+        double m1 = Double.parseDouble(stringM[1]);
+        double doubleM = m0/m1;
+
+        String[] stringS = DMS[2].split("/", 2);
+        double s0 = Double.parseDouble(stringS[0]);
+        double s1 = Double.parseDouble(stringS[1]);
+        double doubleS = s0/s1;
+
+        double result = doubleD + (doubleM/60) + (doubleS/3600);
+
+        return result;
+    }
 
 }

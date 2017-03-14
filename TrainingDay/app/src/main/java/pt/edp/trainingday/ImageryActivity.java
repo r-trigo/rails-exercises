@@ -11,6 +11,7 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -32,7 +33,6 @@ public class ImageryActivity extends AppCompatActivity {
     private String mCurrentPhotoPath, data_tirada, latitude, longitude;
     private static final int ACTION_TAKE_PHOTO = 1;
     private static final int ACTION_PICK_PHOTO = 2;
-    private Bitmap foto1, foto2;
     private int orientation;
 
     @Override
@@ -124,6 +124,18 @@ public class ImageryActivity extends AppCompatActivity {
         latitude = ei.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
         longitude = ei.getAttribute(ExifInterface.TAG_GPS_LONGITUDE);
         data_tirada = ei.getAttribute(ExifInterface.TAG_DATETIME);
+
+        Helper myHelper = new Helper();
+        if (latitude != null) {
+            latitude = String.valueOf(myHelper.EXIFCoordinatesConverter(latitude));
+        } else {
+            latitude = "0.0";
+        }
+        if (longitude != null) {
+            longitude = String.valueOf(-myHelper.EXIFCoordinatesConverter(longitude));
+        } else {
+            longitude = "0.0";
+        }
     }
 
     public static Bitmap rotateImage(Bitmap source, float angle) {
@@ -133,7 +145,7 @@ public class ImageryActivity extends AppCompatActivity {
     }
 
     private void galleryAddPic() {
-        Intent mediaScanIntent = new Intent("android.intent.action.MEDIA_SCANNER_SCAN_FILE");
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         File f = new File(mCurrentPhotoPath);
         Uri contentUri = Uri.fromFile(f);
         mediaScanIntent.setData(contentUri);
@@ -244,19 +256,12 @@ public class ImageryActivity extends AppCompatActivity {
 
 		/* Decode the JPEG file into a Bitmap */
 
-        //rotate
+        //rotate if sideways
         Bitmap bitmap = rotateIfNeeded(bmOptions);
 
 		/* Associate the Bitmap to the ImageView */
         imageButton.setImageBitmap(bitmap);
         imageButton.setVisibility(View.VISIBLE);
-
-        if (isFoto1) {
-            foto1 = bitmap;
-        }
-        else {
-            foto2 = bitmap;
-        }
     }
 
 }
