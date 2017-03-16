@@ -13,6 +13,7 @@ public class MainActivity extends AppCompatActivity {
     private Button bu_swiper;
     private Button bu_drawer;
     private Button bu_grid;
+    private Button bu_refresher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +63,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, GridActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        bu_refresher = (Button) findViewById(R.id.button_refresher);
+        bu_refresher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SwipeToRefreshActivity.class);
                 startActivity(intent);
             }
         });
