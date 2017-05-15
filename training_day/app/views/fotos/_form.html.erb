@@ -21,6 +21,10 @@
     </div>
 
     <div class="field">
+      <%= f.collection_select :imageable_id, Armario.all, :id, :ci_armario %>
+    </div>
+
+    <div class="field">
       <%= f.collection_select :armario_id, Armario.all, :id, :ci_armario %>
     </div>
 

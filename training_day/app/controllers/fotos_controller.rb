@@ -1,74 +1,35 @@
 class FotosController < ApplicationController
-  before_action :set_foto, only: [:show, :edit, :update, :destroy]
+  before_filter :load_imageable
 
   # GET /fotos
   # GET /fotos.json
   def index
-    @fotos = Foto.all
-  end
-
-  # GET /fotos/1
-  # GET /fotos/1.json
-  def show
+    #@fotos = Foto.all
+    @fotos = @imageable.fotos
   end
 
   # GET /fotos/new
   def new
-    @foto = Foto.new
+      @foto = @imageable.fotos.new
   end
 
-  # GET /fotos/1/edit
-  def edit
-  end
-
-  # POST /fotos
-  # POST /fotos.json
   def create
-    @foto = Foto.new(foto_params)
-
-    respond_to do |format|
-      if @foto.save
-        format.html { redirect_to @foto, notice: 'Foto was successfully created.' }
-        format.json { render :show, status: :created, location: @foto }
-      else
-        format.html { render :new }
-        format.json { render json: @foto.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /fotos/1
-  # PATCH/PUT /fotos/1.json
-  def update
-    respond_to do |format|
-      if @foto.update(foto_params)
-        format.html { redirect_to @foto, notice: 'Foto was successfully updated.' }
-        format.json { render :show, status: :ok, location: @foto }
-      else
-        format.html { render :edit }
-        format.json { render json: @foto.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # DELETE /fotos/1
-  # DELETE /fotos/1.json
-  def destroy
-    @foto.destroy
-    respond_to do |format|
-      format.html { redirect_to fotos_url, notice: 'Foto was successfully destroyed.' }
-      format.json { head :no_content }
+    @foto = @imageable.fotos.new(foto_params)
+    if @foto.save
+      redirect_to [@imageable, :fotos], notice: 'Foto criada.'
+    else
+      render :new
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_foto
-      @foto = Foto.find(params[:id])
+    def load_imageable
+      resource, id = request.path.split('/')[1,2]
+      @imageable = resource.singularize.classify.constantize.find(id)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def foto_params
-      params.require(:foto).permit(:nome, :image, :armario_id)
+      params.require(:foto).permit(:nome, :image, :imageable_id, :imageable_type)
     end
 end

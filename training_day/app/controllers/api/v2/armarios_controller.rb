@@ -1,14 +1,13 @@
 module Api
   module V2
     class ArmariosController < ApplicationController
-      #respond_to :json
 
       def index
-        render json: Armario.all
+        @armarios = Armario.all
       end
 
       def show
-        render json: Armario.find(params[:id])
+        @armario = Armario.find(params[:id])
       end
 
       def create

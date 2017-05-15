@@ -8,7 +8,7 @@ module Api
       end
 
       def show
-        render json: Armario.find(params[:id])
+        #render json: Armario.find(params[:id])
       end
 
       def create

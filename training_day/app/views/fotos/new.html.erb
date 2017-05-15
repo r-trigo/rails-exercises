@@ -1,5 +1,27 @@
-<h1>New Foto</h1>
+<%= form_for([@imageable, @foto], multipart: true) do |f| %>
+    <% if @foto.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(foto.errors.count, "error") %> prohibited this foto from being saved:</h2>
 
-<%= render 'form', foto: @foto %>
+          <ul>
+            <% @foto.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+    <% end %>
 
-<%= link_to 'Back', fotos_path %>
+    <div class="field">
+      <%= f.label :nome %>
+      <%= f.text_field :nome %>
+    </div>
+
+    <div class="field">
+      <%= f.file_field :image %>
+    </div>
+
+    <div class="actions">
+      <%= f.submit %>
+    </div>
+
+<% end %>

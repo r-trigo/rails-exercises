@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170216150505) do
+ActiveRecord::Schema.define(version: 20170511102929) do
 
   create_table "armarios", force: :cascade do |t|
     t.string   "ci_armario"
@@ -21,17 +21,19 @@ ActiveRecord::Schema.define(version: 20170216150505) do
 
   create_table "fotos", force: :cascade do |t|
     t.string   "nome"
-    t.integer  "armario_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
     t.string   "image"
-    t.index ["armario_id"], name: "index_fotos_on_armario_id"
+    t.string   "imageable_type"
+    t.integer  "imageable_id"
+    t.index ["imageable_type", "imageable_id"], name: "index_fotos_on_imageable_type_and_imageable_id"
   end
 
-  create_table "sqlite_stat1", id: false, force: :cascade do |t|
-    t. "tbl"
-    t. "idx"
-    t. "stat"
+  create_table "pts", force: :cascade do |t|
+    t.string   "ci_pt"
+    t.string   "tipo"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
 end

@@ -29,10 +29,10 @@ class ArmariosController < ApplicationController
     respond_to do |format|
       if @armario.save
         format.html { redirect_to @armario, notice: 'Armario was successfully created.' }
-        format.json { render :show, status: :created, location: @armario }
+        #format.json { render :show, status: :created, location: @armario }
       else
         format.html { render :new }
-        format.json { render json: @armario.errors, status: :unprocessable_entity }
+        #format.json { render json: @armario.errors, status: :unprocessable_entity }
       end
     end
   end
