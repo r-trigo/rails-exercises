@@ -2,12 +2,23 @@ Rails.application.routes.draw do
 
   require 'api_constraints'
 
-  root 'armarios#index'
 
-  resources :armarios do
+  root 'welcome#index'
+
+  resources :armarios do #model/model
     resources :fotos
+    collection do #model/id/model
+      resources :welcome
+      get :autocomplete
+    end
   end
-  resources :pts
+  resources :pts do
+    collection {
+      get :autocomplete
+    }
+  end
+  #get '/welcome' => 'welcome#index'
+
 
   namespace :api, defaults: {format: 'json'} do
   #namespace :api, path: '/', constraints: { subdomain: 'api' } do
@@ -18,8 +29,9 @@ Rails.application.routes.draw do
     end
 
     scope module: :v2, constraints: ApiConstraints.new(version: 2, default: true) do
-      resources :fotos
-      resources :armarios
+      resources :armarios do
+        resources :fotos
+      end
     end
 
   end

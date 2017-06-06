@@ -1,6 +1,10 @@
 class ArmariosController < ApplicationController
   before_action :set_armario, only: [:show, :edit, :update, :destroy]
 
+  def autocomplete
+    render json: Autocomplete::Armarios.new(view_context)
+  end
+
   # GET /armarios
   # GET /armarios.json
   def index
