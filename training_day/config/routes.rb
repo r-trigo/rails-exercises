@@ -2,7 +2,8 @@ Rails.application.routes.draw do
 
   require 'api_constraints'
 
-
+  resources :people
+  resources :communities
   root 'welcome#index'
 
   resources :armarios do #model/model

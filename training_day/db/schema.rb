@@ -10,28 +10,47 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170511102929) do
+ActiveRecord::Schema.define(version: 20170607161258) do
 
   create_table "armarios", force: :cascade do |t|
-    t.string   "ci_armario"
+    t.string "ci_armario"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string   "tipo"
+    t.string "tipo"
+  end
+
+  create_table "communities", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "communities_people", id: false, force: :cascade do |t|
+    t.integer "person_id", null: false
+    t.integer "community_id", null: false
   end
 
   create_table "fotos", force: :cascade do |t|
-    t.string   "nome"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
-    t.string   "image"
-    t.string   "imageable_type"
-    t.integer  "imageable_id"
+    t.string "nome"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "image"
+    t.string "imageable_type"
+    t.integer "imageable_id"
     t.index ["imageable_type", "imageable_id"], name: "index_fotos_on_imageable_type_and_imageable_id"
   end
 
+  create_table "people", force: :cascade do |t|
+    t.string "name"
+    t.string "email"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "pts", force: :cascade do |t|
-    t.string   "ci_pt"
-    t.string   "tipo"
+    t.string "ci_pt"
+    t.string "tipo"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
