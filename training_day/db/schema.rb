@@ -10,7 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170607161258) do
+ActiveRecord::Schema.define(version: 20170608105528) do
+
+  create_table "armario_intervencoes_armario_necessidades", id: false, force: :cascade do |t|
+    t.integer "armario_intervenco_id", null: false
+    t.integer "armario_necessidade_id", null: false
+  end
 
   create_table "armarios", force: :cascade do |t|
     t.string "ci_armario"
@@ -51,6 +56,23 @@ ActiveRecord::Schema.define(version: 20170607161258) do
   create_table "pts", force: :cascade do |t|
     t.string "ci_pt"
     t.string "tipo"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "torneio_equipamentos", force: :cascade do |t|
+    t.string "nome"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "torneio_equipamentos_jogadors", id: false, force: :cascade do |t|
+    t.integer "torneio_equipamento_id", null: false
+    t.integer "torneio_jogador_id", null: false
+  end
+
+  create_table "torneio_jogadors", force: :cascade do |t|
+    t.string "nome"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
