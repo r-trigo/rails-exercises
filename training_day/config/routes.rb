@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :todo_lists
   require 'api_constraints'
 
   resources :people

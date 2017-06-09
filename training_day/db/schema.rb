@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170608105528) do
+ActiveRecord::Schema.define(version: 20170609095551) do
 
   create_table "armario_intervencoes_armario_necessidades", id: false, force: :cascade do |t|
     t.integer "armario_intervenco_id", null: false
@@ -56,6 +56,35 @@ ActiveRecord::Schema.define(version: 20170608105528) do
   create_table "pts", force: :cascade do |t|
     t.string "ci_pt"
     t.string "tipo"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "questions", force: :cascade do |t|
+    t.integer "survey_id"
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "surveys", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "tasks", force: :cascade do |t|
+    t.integer "todo_list_id"
+    t.string "name"
+    t.boolean "completed"
+    t.date "due"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["todo_list_id"], name: "index_tasks_on_todo_list_id"
+  end
+
+  create_table "todo_lists", force: :cascade do |t|
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

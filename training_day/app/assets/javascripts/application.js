@@ -13,5 +13,7 @@
 //= require jquery
 //= require jquery-ui
 //= require jquery_ujs
+//= require dropzone
 //= require turbolinks
+//= require cocoon
 //= require_tree .

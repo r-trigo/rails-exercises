@@ -73,6 +73,6 @@ class ArmariosController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def armario_params
-      params.require(:armario).permit(:ci_armario)
+      params.require(:armario).permit(:ci_armario, fotos_attributes: Foto.attribute_names.map(&:to_sym).push(:_destroy))
     end
 end

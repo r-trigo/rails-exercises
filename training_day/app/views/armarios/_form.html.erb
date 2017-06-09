@@ -16,7 +16,14 @@
     <%= f.text_field :ci_armario %>
   </div>
 
+  <div class="foto_fields">
+    <%= f.fields_for :fotos do |foto| %>
+      <%= render 'foto_fields', f: foto %>
+    <% end %>
+  </div>
+
   <div class="actions">
+    <%= link_to_add_association 'add photo', f, :fotos, id: 'add-foto'%>
     <%= f.submit %>
   </div>
 <% end %>

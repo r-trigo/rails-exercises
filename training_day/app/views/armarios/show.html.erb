@@ -9,7 +9,7 @@
   <strong>Fotos:</strong>
   <br>
   <% for foto in @armario.fotos %>
-      <%= image_tag foto.image_url(:thumb).to_s %>
+      <%= image_tag foto.image_url(:thumb).to_s if foto.image? %>
       <br>
       <strong>Nome:</strong>
       <%= foto.nome %>
